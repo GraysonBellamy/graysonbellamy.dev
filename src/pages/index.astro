@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import { profile } from "../data/profile";
+import { projects, categoryOrder } from "../data/projects";
+
+// Group projects by category, ordered by categoryOrder (unknown categories last).
+const byCategory = new Map<string, typeof projects>();
+for (const p of projects) {
+  const list = byCategory.get(p.category) ?? [];
+  list.push(p);
+  byCategory.set(p.category, list);
+}
+const ordered = [...byCategory.keys()].sort((a, b) => {
+  const ia = categoryOrder.indexOf(a as (typeof categoryOrder)[number]);
+  const ib = categoryOrder.indexOf(b as (typeof categoryOrder)[number]);
+  return (ia === -1 ? categoryOrder.length : ia) - (ib === -1 ? categoryOrder.length : ib);
+});
+
+const year = new Date().getFullYear();
+const description = `${profile.name} — ${profile.tagline}`;
+---
+
+<BaseLayout title={profile.name} description={description}>
+  <header class="hero">
+    <div class="wrap">
+      <h1>{profile.name}</h1>
+      <p class="tagline">{profile.tagline}</p>
+      <p class="intro">{profile.intro}</p>
+      {
+        profile.links.filter((l) => l.href).length > 0 && (
+          <ul class="links">
+            {profile.links
+              .filter((l) => l.href)
+              .map((l) => (
+                <li>
+                  <a href={l.href} rel="noopener">
+                    {l.icon && (
+                      <svg aria-hidden="true">
+                        <use href={`#${l.icon}`} />
+                      </svg>
+                    )}
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+          </ul>
+        )
+      }
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap">
+      {
+        ordered.map((category) => (
+          <section class="section">
+            <h2>{category}</h2>
+            <div class="grid">
+              {byCategory.get(category)!.map((project) => (
+                <ProjectCard project={project} />
+              ))}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© {year} {profile.name}</span>
+      <span>
+        Built with <a href="https://astro.build" rel="noopener">Astro</a>,
+        hosted on Cloudflare Pages.
+      </span>
+    </div>
+  </footer>
+</BaseLayout>

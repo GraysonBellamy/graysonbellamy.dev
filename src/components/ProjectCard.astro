@@ -1,0 +1,36 @@
+---
+import type { Project } from "../data/projects";
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<article class="card">
+  <div class="card-head">
+    <h3>{project.name}</h3>
+    {project.language && <span class="badge">{project.language}</span>}
+  </div>
+  <p>{project.description}</p>
+  <div class="card-links">
+    {
+      project.docs && (
+        <a
+          class="primary"
+          href={project.docs}
+          rel="noopener"
+          aria-label={`Docs — ${project.name}`}
+        >
+          <svg aria-hidden="true"><use href="#book" /></svg>
+          Docs
+        </a>
+      )
+    }
+    <a href={project.github} rel="noopener" aria-label={`GitHub — ${project.name}`}>
+      <svg aria-hidden="true"><use href="#github" /></svg>
+      GitHub
+    </a>
+  </div>
+</article>

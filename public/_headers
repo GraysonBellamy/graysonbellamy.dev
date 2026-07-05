@@ -1,0 +1,15 @@
+# Security headers applied to every route, served by Cloudflare Pages.
+# Mirrors the headers used across the graysonbellamy.dev docs sites.
+#
+# CSP notes: the site is fully self-contained (inlined CSS, no JS, no external
+# assets), so default-src 'none' works. style-src 'unsafe-inline' is required
+# by Astro's inlined <style> and the icon sprite's style attribute. If the
+# Cloudflare Web Analytics beacon is enabled (see BaseLayout.astro), extend
+# with:  script-src https://static.cloudflareinsights.com;
+#        connect-src https://cloudflareinsights.com
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Content-Security-Policy: default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'
