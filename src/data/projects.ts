@@ -118,7 +118,7 @@ export const projects: Project[] = [
   // ── Analysis & data ───────────────────────────────────────────────────────
   {
     name: "pyngb",
-    description: "Parse and analyze NETZSCH STA NGB files in Python.",
+    description: "Parse and analyze NETZSCH STA and dilatometer NGB files in Python.",
     github: "https://github.com/GraysonBellamy/pyngb",
     docs: "https://pyngb.graysonbellamy.dev/",
     language: "Python",
